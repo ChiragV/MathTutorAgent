@@ -94,6 +94,9 @@ class LLMClient:
         if "router for a math tutor" in prompt_lower:
             return self._stub_route(prompt_lower)
 
+        if "algebra question" in prompt_lower:
+            return self._stub_algebra(difficulty, prompt_lower)
+
         if "arithmetic question" in prompt_lower:
             return self._stub_arithmetic(difficulty)
 
@@ -148,6 +151,39 @@ class LLMClient:
                 "answer": "660",
                 "explanation": "First multiply 48 x 17 = 816. Then subtract 156 to get 660.",
                 "hints": ["Break 17 into 10 + 7.", "Subtract 156 after multiplying."],
+            },
+        }
+        return json.dumps(examples.get(difficulty, examples["easy"]))
+
+    def _stub_algebra(self, difficulty: str, prompt_lower: str) -> str:
+        if "two variable" in prompt_lower or "two variables" in prompt_lower:
+            return json.dumps(
+                {
+                    "question": "Solve the system: x + y = 10 and x - y = 2.",
+                    "answer": "x = 6, y = 4",
+                    "explanation": "Add the equations to get 2x = 12, so x = 6. Substitute into x + y = 10 to get y = 4.",
+                    "hints": ["Add the two equations first.", "Substitute x back into one equation."],
+                }
+            )
+
+        examples = {
+            "easy": {
+                "question": "Solve for x: x + 7 = 12.",
+                "answer": "x = 5",
+                "explanation": "Subtract 7 from both sides: x = 12 - 7 = 5.",
+                "hints": ["Undo addition with subtraction.", "Keep both sides balanced."],
+            },
+            "medium": {
+                "question": "Solve for x: 3x - 4 = 14.",
+                "answer": "x = 6",
+                "explanation": "Add 4 to both sides to get 3x = 18, then divide by 3.",
+                "hints": ["Add 4 first.", "Divide both sides by 3."],
+            },
+            "hard": {
+                "question": "Solve for x: 2(3x - 5) + 4 = 5x + 11.",
+                "answer": "x = 17",
+                "explanation": "Expand to get 6x - 10 + 4 = 5x + 11. Simplify to 6x - 6 = 5x + 11, so x = 17.",
+                "hints": ["Distribute the 2 first.", "Collect x terms on one side."],
             },
         }
         return json.dumps(examples.get(difficulty, examples["easy"]))

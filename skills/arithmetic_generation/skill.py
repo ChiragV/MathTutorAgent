@@ -10,10 +10,12 @@ def run_skill(request: dict[str, Any], logger=None, trace_id: str | None = None)
     difficulty = request.get("difficulty", "easy")
     question_type = request.get("question_type", "mixed")
     hints_requested = bool(request.get("hints_requested", False))
+    user_prompt = request.get("prompt", "")
 
     prompt = (
         f"Generate one arithmetic question for a student. Topic: {topic}. Difficulty: {difficulty}. "
-        f"Question type: {question_type}. Return concise JSON with keys question, answer, explanation, hints."
+        f"Question type: {question_type}. User request: {user_prompt}. "
+        "Return concise JSON with keys question, answer, explanation, hints."
     )
     client = LLMClient()
     raw = client.generate_question(prompt, logger=logger, trace_id=trace_id)
