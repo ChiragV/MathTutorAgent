@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Math Tutor Agent</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; }
+      form { display: grid; gap: 0.75rem; max-width: 480px; }
+      textarea, input { padding: 0.6rem; }
+      button { padding: 0.6rem 1rem; width: fit-content; }
+      pre { background: #f4f4f4; padding: 1rem; overflow-x: auto; }
+    </style>
+  </head>
+  <body>
+    <h1>Math Tutor Agent</h1>
+    <p>Describe the math question you want and the orchestrator will route it to the appropriate skill.</p>
+    <form id="generate-form">
+      <input name="topic" placeholder="Topic" value="arithmetic" />
+      <input name="difficulty" placeholder="Difficulty" value="easy" />
+      <textarea name="prompt" rows="4" placeholder="Describe the question you want">Generate an easy arithmetic question</textarea>
+      <button type="submit">Generate</button>
+    </form>
+    <pre id="result">Waiting for a request...</pre>
+    <script>
+      const form = document.getElementById('generate-form');
+      const result = document.getElementById('result');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const data = Object.fromEntries(new FormData(form).entries());
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        result.textContent = JSON.stringify(await response.json(), null, 2);
+      });
+    </script>
+  </body>
+</html>

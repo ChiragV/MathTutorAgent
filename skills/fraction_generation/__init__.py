@@ -1,0 +1,1 @@
+"""Fraction generation skill."""
