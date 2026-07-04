@@ -2,47 +2,243 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Math Tutor Agent</title>
     <style>
-      body { font-family: Arial, sans-serif; margin: 2rem; }
-      form { display: grid; gap: 0.75rem; max-width: 480px; }
-      textarea, input, select { padding: 0.6rem; }
-      button { padding: 0.6rem 1rem; width: fit-content; }
-      pre { background: #f4f4f4; padding: 1rem; overflow-x: auto; }
+      :root {
+        color-scheme: light;
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --text: #172033;
+        --muted: #647086;
+        --line: #d9dfeb;
+        --accent: #1d5fd1;
+        --accent-dark: #1649a4;
+        --code: #101828;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background: var(--bg);
+      }
+
+      main {
+        width: min(1080px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 48px 0;
+      }
+
+      .header {
+        margin-bottom: 28px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        max-width: 680px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 18px 45px rgba(23, 32, 51, 0.08);
+      }
+
+      form {
+        display: grid;
+        gap: 18px;
+        padding: 24px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      label {
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: #344054;
+      }
+
+      textarea,
+      select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--text);
+        font: inherit;
+        padding: 11px 12px;
+        outline: none;
+        transition: border-color 120ms ease, box-shadow 120ms ease;
+      }
+
+      textarea:focus,
+      select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(29, 95, 209, 0.14);
+      }
+
+      textarea {
+        min-height: 132px;
+        resize: vertical;
+        line-height: 1.5;
+      }
+
+      button {
+        width: 100%;
+        border: 0;
+        border-radius: 6px;
+        background: var(--accent);
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 700;
+        padding: 12px 16px;
+        transition: background 120ms ease, transform 120ms ease;
+      }
+
+      button:hover { background: var(--accent-dark); }
+      button:active { transform: translateY(1px); }
+      button:disabled { cursor: wait; opacity: 0.72; }
+
+      .result-panel {
+        min-height: 430px;
+        overflow: hidden;
+      }
+
+      .result-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .result-title {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .status {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      pre {
+        min-height: 356px;
+        margin: 0;
+        padding: 20px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: #0f172a;
+        color: #dbeafe;
+        font: 0.9rem/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      }
+
+      @media (max-width: 780px) {
+        main { padding: 28px 0; }
+        .workspace { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
-    <h1>Math Tutor Agent</h1>
-    <p>Describe the math question you want and the orchestrator will route it to the appropriate skill.</p>
-    <form id="generate-form">
-      <select name="topic" aria-label="Topic">
-        <option value="arithmetic" selected>Arithmetic</option>
-        <option value="algebra">Algebra</option>
-        <option value="fractions">Fractions</option>
-        <option value="geometry">Geometry</option>
-        <option value="word problems">Word Problems</option>
-      </select>
-      <select name="difficulty" aria-label="Difficulty">
-        <option value="easy" selected>Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
-      <textarea name="prompt" rows="4" placeholder="Describe the question you want">Generate an easy arithmetic question</textarea>
-      <button type="submit">Generate</button>
-    </form>
-    <pre id="result">Waiting for a request...</pre>
+    <main>
+      <section class="header">
+        <h1>Math Tutor Agent</h1>
+        <p class="subtitle">Generate structured math practice with skill-based routing, answers, explanations, hints, and traceable results.</p>
+      </section>
+
+      <section class="workspace">
+        <form id="generate-form" class="panel">
+          <div class="field">
+            <label for="topic">Topic</label>
+            <select id="topic" name="topic">
+              <option value="arithmetic" selected>Arithmetic</option>
+              <option value="algebra">Algebra</option>
+              <option value="fractions">Fractions</option>
+              <option value="geometry">Geometry</option>
+              <option value="word problems">Word Problems</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="difficulty">Difficulty</label>
+            <select id="difficulty" name="difficulty">
+              <option value="easy" selected>Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="prompt">Request</label>
+            <textarea id="prompt" name="prompt" rows="4" placeholder="Describe the question you want">Generate an easy arithmetic question</textarea>
+          </div>
+
+          <button id="submit-button" type="submit">Generate Question</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite">
+          <div class="result-header">
+            <h2 class="result-title">Agent Response</h2>
+            <span id="status" class="status">Ready</span>
+          </div>
+          <pre id="result">Waiting for a request...</pre>
+        </section>
+      </section>
+    </main>
     <script>
       const form = document.getElementById('generate-form');
       const result = document.getElementById('result');
+      const status = document.getElementById('status');
+      const button = document.getElementById('submit-button');
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const data = Object.fromEntries(new FormData(form).entries());
-        const response = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        result.textContent = JSON.stringify(await response.json(), null, 2);
+        status.textContent = 'Generating';
+        button.disabled = true;
+        result.textContent = 'Working...';
+
+        try {
+          const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          result.textContent = JSON.stringify(await response.json(), null, 2);
+          status.textContent = 'Complete';
+        } catch (error) {
+          result.textContent = 'Unable to generate a question. Check the server and try again.';
+          status.textContent = 'Error';
+        } finally {
+          button.disabled = false;
+        }
       });
     </script>
   </body>
