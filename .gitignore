@@ -6,3 +6,6 @@ logs/
 data/
 .pytest_cache/
 *.db
+testGeminiModel.py
+testOpenAIModel.py
+testPhi.py
