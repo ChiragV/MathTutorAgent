@@ -6,7 +6,7 @@
     <style>
       body { font-family: Arial, sans-serif; margin: 2rem; }
       form { display: grid; gap: 0.75rem; max-width: 480px; }
-      textarea, input { padding: 0.6rem; }
+      textarea, input, select { padding: 0.6rem; }
       button { padding: 0.6rem 1rem; width: fit-content; }
       pre { background: #f4f4f4; padding: 1rem; overflow-x: auto; }
     </style>
@@ -15,8 +15,18 @@
     <h1>Math Tutor Agent</h1>
     <p>Describe the math question you want and the orchestrator will route it to the appropriate skill.</p>
     <form id="generate-form">
-      <input name="topic" placeholder="Topic" value="arithmetic" />
-      <input name="difficulty" placeholder="Difficulty" value="easy" />
+      <select name="topic" aria-label="Topic">
+        <option value="arithmetic" selected>Arithmetic</option>
+        <option value="algebra">Algebra</option>
+        <option value="fractions">Fractions</option>
+        <option value="geometry">Geometry</option>
+        <option value="word problems">Word Problems</option>
+      </select>
+      <select name="difficulty" aria-label="Difficulty">
+        <option value="easy" selected>Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
       <textarea name="prompt" rows="4" placeholder="Describe the question you want">Generate an easy arithmetic question</textarea>
       <button type="submit">Generate</button>
     </form>
