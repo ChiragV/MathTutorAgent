@@ -90,6 +90,9 @@ math-tutor-agent/
 │
 ├── docs/                              # Documentation
 │   └── PROJECT_SPECIFICATION.md      # Original requirements
+│   └── KAGGLE_WRITEUP_DRAFT.md       # Draft writeup for Kaggle submission
+│   └── SUBMISSION_NOTES.md           # Capstone submission summary
+│   └── VIDEO_SCRIPT.md               # Demo video outline
 │
 ├── data/                              # Created at runtime
 │   └── questions.db                  # SQLite question store
@@ -103,6 +106,9 @@ math-tutor-agent/
 ---
 
 ## 🚀 Quick Start
+
+### Preview
+![App Dashboard Screenshot](./ui/screenshots/screenshot.png)
 
 ### Setup
 
