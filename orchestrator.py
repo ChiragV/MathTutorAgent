@@ -48,6 +48,39 @@ SKILLS = {
     },
 }
 
+TOPIC_KEYWORDS = {
+    "arithmetic": ["arithmetic", "addition", "subtraction", "multiplication", "division"],
+    "algebra": ["algebra", "equation", "variable"],
+    "fractions": ["fraction", "fractions"],
+    "geometry": ["geometry", "area", "perimeter", "volume"],
+    "word problems": ["word problem", "word", "story"],
+}
+
+
+def normalize_request(request: dict[str, Any]) -> dict[str, Any]:
+    normalized = dict(request)
+    prompt_text = str(normalized.get("prompt") or "").lower()
+
+    if "difficulty" not in normalized:
+        for difficulty in ("easy", "medium", "hard"):
+            if difficulty in prompt_text:
+                normalized["difficulty"] = difficulty
+                break
+
+    if "topic" not in normalized:
+        for topic, keywords in TOPIC_KEYWORDS.items():
+            if any(keyword in prompt_text for keyword in keywords):
+                normalized["topic"] = topic
+                break
+
+    if "question_type" not in normalized:
+        for question_type in ("addition", "subtraction", "multiplication", "division", "area", "perimeter", "volume"):
+            if question_type in prompt_text:
+                normalized["question_type"] = question_type
+                break
+
+    return normalized
+
 
 def load_skill_descriptions() -> dict[str, str]:
     descriptions: dict[str, str] = {}
@@ -61,6 +94,16 @@ def load_skill_descriptions() -> dict[str, str]:
 
 
 def select_skill(request: dict[str, Any], logger: SkillLogger | None, trace_id: str) -> str:
+    topic = str(request.get("topic") or "").lower()
+    if topic in ("arithmetic", "algebra", "fractions", "geometry", "word problems"):
+        return {
+            "arithmetic": "arithmetic-generation",
+            "algebra": "algebra-generation",
+            "fractions": "fraction-generation",
+            "geometry": "geometry-generation",
+            "word problems": "word-problem-generation",
+        }[topic]
+
     descriptions = load_skill_descriptions()
     prompt = (
         "You are the router for a math tutor. Choose exactly one skill based on the user's request. "
@@ -107,6 +150,7 @@ def select_skill(request: dict[str, Any], logger: SkillLogger | None, trace_id: 
 
 def process_request(request: dict[str, Any], logger: SkillLogger | None = None, trace_id: str | None = None) -> dict[str, Any]:
     trace_id = trace_id or str(uuid.uuid4())
+    request = normalize_request(request)
     if logger is None:
         logger = SkillLogger(ROOT / "logs" / "trace.jsonl")
 

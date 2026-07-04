@@ -24,3 +24,5 @@ def test_arithmetic_skill_uses_skill_metadata():
 
     assert result["source_skill"] == "arithmetic-generation"
     assert result["metadata"]["operation"] == "division"
+    assert result["difficulty"] == "hard"
+    assert result["question_text"] != "What is 2 + 3?"
