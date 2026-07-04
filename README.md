@@ -108,7 +108,7 @@ math-tutor-agent/
 ## 🚀 Quick Start
 
 ### Preview
-![App Dashboard Screenshot](./ui/screenshots/screenshot.png)
+![App Dashboard Screenshot](./ui/screenshots/Screenshot.png)
 
 ### Setup
 
