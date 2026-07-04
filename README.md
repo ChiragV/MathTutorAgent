@@ -2,6 +2,9 @@
 
 A skill-based, agentic math tutoring system that generates age-appropriate math questions using LLMs. The system routes requests to specialized skills, persists questions to SQLite, traces all LLM interactions, and provides a web UI for interaction.
 
+### Preview
+![App Dashboard Screenshot](./ui/screenshots/Screenshot.png)
+
 **Key Features:**
 - 🎯 **Skill-based routing**: Request router intelligently selects the right skill for each request
 - 🧠 **LLM-powered generation**: Uses OpenAI, Gemini, or local models (Ollama) to generate questions
@@ -106,9 +109,6 @@ math-tutor-agent/
 ---
 
 ## 🚀 Quick Start
-
-### Preview
-![App Dashboard Screenshot](./ui/screenshots/Screenshot.png)
 
 ### Setup
 
