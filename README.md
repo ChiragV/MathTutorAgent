@@ -1,18 +1,21 @@
 # Math Tutor Agent
 
-A skill-based, agentic math tutoring system that generates age-appropriate math questions using LLMs. The system routes requests to specialized skills, persists questions to SQLite, traces all LLM interactions, and provides a web UI for interaction.
+Students often need unlimited practice questions that match their current skill level, but creating fresh, non-repetitive problems is time-consuming.
+
+Math Tutor Agent is an AI-powered tutoring system that uses multiple specialized skills to generate age-appropriate math questions, validate them, prevent duplicates, and deliver personalized practice through an intelligent orchestrator.
 
 ### Preview
 ![App Dashboard Screenshot](./ui/screenshots/Screenshot.png)
 
-**Key Features:**
-- 🎯 **Skill-based routing**: Request router intelligently selects the right skill for each request
-- 🧠 **LLM-powered generation**: Uses OpenAI, Gemini, or local models (Ollama) to generate questions
-- 🛡️ **Request guardrails**: Validates incoming requests before any LLM call by enforcing supported topics, difficulty levels, prompt length limits, and detecting common prompt injection attempts.
-- 📊 **SQLite persistence**: Store question history and detect duplicates across sessions
-- 📝 **Full tracing**: Every LLM prompt/response logged to JSONL for debugging and analysis
-- 🧪 **Comprehensive testing**: 3 test cases per skill with 100% pass rate
-- 🎨 **Web UI**: FastAPI + HTML5 interface for easy interaction
+## ✨ Key Highlights
+
+- 🤖 **Multi-skill AI agent** with intelligent LLM-based request routing to specialized math skills
+- 🧠 **Multi-model support** for OpenAI, Gemini, and local Ollama models
+- 🛡️ **Built-in guardrails** with topic validation, difficulty checks, prompt length limits, and prompt injection detection
+- 📚 **Persistent question store** using SQLite with duplicate detection across sessions
+- 📈 **End-to-end tracing** of orchestrator decisions and every LLM prompt/response using JSONL logs
+- 🧪 **Comprehensive testing** with 24 automated tests (3 per skill) and 100% pass rate
+- 🌐 **Interactive web interface** built with FastAPI and HTML5 for easy experimentation
 
 ---
 
