@@ -8,6 +8,7 @@ A skill-based, agentic math tutoring system that generates age-appropriate math 
 **Key Features:**
 - 🎯 **Skill-based routing**: Request router intelligently selects the right skill for each request
 - 🧠 **LLM-powered generation**: Uses OpenAI, Gemini, or local models (Ollama) to generate questions
+- 🛡️ **Request guardrails**: Validates incoming requests before any LLM call by enforcing supported topics, difficulty levels, prompt length limits, and detecting common prompt injection attempts.
 - 📊 **SQLite persistence**: Store question history and detect duplicates across sessions
 - 📝 **Full tracing**: Every LLM prompt/response logged to JSONL for debugging and analysis
 - 🧪 **Comprehensive testing**: 3 test cases per skill with 100% pass rate
@@ -557,6 +558,34 @@ See `requirements.txt`:
 - **Database**: SQLite is single-file, fine for dev/small scale. Use PostgreSQL for production
 - **Logs**: JSONL logs are plaintext; avoid logging sensitive data beyond trace IDs
 - **UI**: Basic web form; add authentication if needed
+
+## 🛡️ Guardrails
+
+The orchestrator validates every incoming request before invoking the LLM. This prevents invalid requests from consuming model calls and provides basic protection against prompt injection attempts.
+
+### Validation Rules
+
+| Guardrail | Description |
+|-----------|-------------|
+| Supported Topics | Requests must target one of the supported math topics (Arithmetic, Algebra, Fractions, Geometry, or Word Problems). |
+| Difficulty Validation | Difficulty must be `easy`, `medium`, or `hard`. |
+| Prompt Length | Prompts are limited to **500 characters**. |
+| Prompt Normalization | Leading and trailing whitespace is removed before validation. |
+| Prompt Injection Detection | Requests containing suspicious instruction patterns are rejected. |
+
+### Blocked Prompt Patterns
+
+The following phrases are rejected before any LLM call:
+
+- `ignore previous instructions`
+- `system prompt`
+- `developer message`
+- `api key`
+- `password`
+
+### Error Handling
+
+Requests that fail validation raise a `GuardrailError`. Validation occurs before skill routing and LLM invocation, reducing unnecessary model calls and helping ensure only well-formed requests are processed.
 
 ---
 
