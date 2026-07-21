@@ -1,21 +1,38 @@
 # Math Tutor Agent
 
+> 🚀 **Built for OpenAI Build Week using ChatGPT 5.6 and OpenAI Codex**
+
 Students often need unlimited practice questions that match their current skill level, but creating fresh, non-repetitive problems is time-consuming.
 
-Math Tutor Agent is an AI-powered tutoring system that uses multiple specialized skills to generate age-appropriate math questions, validate them, prevent duplicates, and deliver personalized practice through an intelligent orchestrator.
+**Math Tutor Agent** is an AI-powered tutoring system that uses multiple specialized skills to generate age-appropriate math questions, validate them, prevent duplicates, and deliver personalized practice through an intelligent orchestrator.
+
+This project was **designed and implemented with ChatGPT 5.6 and OpenAI Codex**, demonstrating how AI-assisted development can accelerate the creation of production-quality applications—from architecture and coding to testing, documentation, and debugging.
 
 ### Preview
-![App Dashboard Screenshot](./ui/screenshots/Screenshot.png)
 
 ## ✨ Key Highlights
 
-- 🤖 **Multi-skill AI agent** with intelligent LLM-based request routing to specialized math skills
-- 🧠 **Multi-model support** for OpenAI, Gemini, and local Ollama models
-- 🛡️ **Built-in guardrails** with topic validation, difficulty checks, prompt length limits, and prompt injection detection
-- 📚 **Persistent question store** using SQLite with duplicate detection across sessions
-- 📈 **End-to-end tracing** of orchestrator decisions and every LLM prompt/response using JSONL logs
-- 🧪 **Comprehensive testing** with 24 automated tests (3 per skill) and 100% pass rate
-- 🌐 **Interactive web interface** built with FastAPI and HTML5 for easy experimentation
+* 🚀 **Built for OpenAI Build Week** using **ChatGPT 5.6** and **OpenAI Codex**
+* 🤖 **Multi-skill AI agent** with intelligent LLM-based request routing to specialized math skills
+* 🧠 **Multi-model support** for OpenAI (GPT-5.6), Gemini, and local Ollama models
+* 🛡️ **Built-in guardrails** with topic validation, difficulty checks, prompt length limits, and prompt injection detection
+* 📚 **Persistent question store** using SQLite with duplicate detection across sessions
+* 📈 **End-to-end tracing** of orchestrator decisions and every LLM prompt/response using JSONL logs
+* 🧪 **Comprehensive testing** with 24 automated tests (3 per skill) and 100% pass rate
+* 🌐 **Interactive web interface** built with FastAPI and HTML5 for easy experimentation
+
+## 🛠️ AI-Assisted Development
+
+This project showcases how **ChatGPT 5.6** and **OpenAI Codex** can be used throughout the software development lifecycle:
+
+* 🏗️ Designing the modular multi-skill agent architecture
+* 💻 Implementing the orchestrator, AI skills, and web application
+* 🧪 Generating and refining automated tests
+* 🛡️ Adding guardrails, tracing, and reliability features
+* 📖 Improving documentation and developer experience
+
+The result is a production-style AI application built rapidly with AI while maintaining a modular, extensible, and testable architecture.
+
 
 ---
 
